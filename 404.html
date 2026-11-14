@@ -6,6 +6,11 @@
     <script>
       (function () {
         var path = location.pathname;
+        if (/\/404\.html$/.test(path)) {
+          try {
+            if (document.referrer) path = new URL(document.referrer).pathname;
+          } catch (e) {}
+        }
         if (path.indexOf('/quiz') === 0) {
           location.replace('/quiz/');
           return;
@@ -13,7 +18,7 @@
         var m = path.match(/^\/colportor\/?(.*)$/);
         if (m) {
           var rest = (m[1] || '').replace(/\/+$/, '');
-          if (rest && !/^(_expo|assets|favicon|metadata)/.test(rest)) {
+          if (rest && !/^(_expo|assets|favicon|metadata|404\.html)/.test(rest)) {
             location.replace('/colportor/#' + decodeURIComponent(rest));
           } else {
             location.replace('/colportor/');
