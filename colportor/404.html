@@ -40,6 +40,16 @@
   <script>
     (function () {
       var path = location.pathname;
+      var after = path.replace(/^\/colportor\/?/, '').replace(/\/+$/, '');
+      var hash = location.hash.replace(/^#\/?/, '');
+      var pending = hash || after;
+      try {
+        if (pending && !/^(_expo|assets|favicon|metadata|index\.html|404\.html)$/.test(pending)) {
+          sessionStorage.setItem('colportor:route', pending);
+        } else {
+          sessionStorage.removeItem('colportor:route');
+        }
+      } catch (e) {}
       var asset = /\/(?:_expo|assets|favicon|metadata)/.test(path);
       var m = path.match(/^\/colportor\/(.+)$/);
       if (m && !asset && m[1] !== '' && m[1] !== 'index.html' && m[1] !== '404.html') {
@@ -63,6 +73,12 @@
           } else {
             u.pathname = BASE + '/';
             if (!u.hash) u.hash = '#/' + rest;
+          }
+          if (!u.hash) {
+            try {
+              var keep = sessionStorage.getItem('colportor:route') || '';
+              if (keep) u.hash = '#' + (keep.charAt(0) === '/' ? keep : '/' + keep);
+            } catch (e) {}
           }
           return u.pathname + u.search + u.hash;
         } catch (e) {
@@ -115,6 +131,6 @@
       }
     })();
   </script>
-<script src="/colportor/_expo/static/js/web/index-de469653a95714cbd7e7fd4df43882fe.js" defer></script>
+<script src="/colportor/_expo/static/js/web/index-3656b2c930bbdb9aa1266d1dac07878b.js" defer></script>
 </body>
 </html>
