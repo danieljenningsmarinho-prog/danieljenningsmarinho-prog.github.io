@@ -1,16 +1,28 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Página não encontrada</title>
+    <title>Colportor</title>
     <script>
-      if (location.pathname.indexOf('/colportor') === 0) {
-        location.replace('/colportor/');
-      }
+      (function () {
+        var path = location.pathname;
+        if (path.indexOf('/quiz') === 0) {
+          location.replace('/quiz/');
+          return;
+        }
+        var m = path.match(/^\/colportor\/?(.*)$/);
+        if (m) {
+          var rest = (m[1] || '').replace(/\/+$/, '');
+          if (rest && !/^(_expo|assets|favicon|metadata)/.test(rest)) {
+            location.replace('/colportor/#' + decodeURIComponent(rest));
+          } else {
+            location.replace('/colportor/');
+          }
+          return;
+        }
+        location.replace('/');
+      })();
     </script>
   </head>
-  <body>
-    <p><a href="/quiz/">Quiz Mapa de Leitura</a> · <a href="/colportor/">App Colportor</a></p>
-  </body>
+  <body></body>
 </html>
