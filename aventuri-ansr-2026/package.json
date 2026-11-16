@@ -1,0 +1,23 @@
+{
+  "name": "aventuri-ansr-2026",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "studio": "remotion studio",
+    "render:v": "remotion render src/index.ts AventuriVertical out/AventuriVertical.mp4",
+    "render:h": "remotion render src/index.ts AventuriHorizontal out/AventuriHorizontal.mp4"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@remotion/cli": "^4.0.543",
+    "@remotion/transitions": "^4.0.543",
+    "@types/react": "^18.3.31",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "remotion": "^4.0.543",
+    "typescript": "^5.9.3"
+  }
+}
