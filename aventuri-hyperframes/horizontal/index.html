@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<!-- GERADO por build.mjs — edite o roteiro em build.mjs e o visual em style.css, depois rode: node build.mjs -->
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920, height=1080">
+<title>Aventuri ANSR 2026 · Nosso Amiguinho (horizontal)</title>
+<script src="gsap.min.js"></script>
+<style>
+html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #071A3D; }
+/* Visual minimalista: fundo liso, tipografia grande, linhas finas, uma cor de destaque por cena. */
+#root {
+  --navy: #071A3D; --blue: #005CA1; --yellow: #FFE14A; --teal: #3CCFC0; --white: #FFFFFF;
+  --soft: rgba(255,255,255,.62); --hair: rgba(255,255,255,.18);
+  position: relative; overflow: hidden; width: 100%; height: 100%;
+  font-family: "Inter", "Helvetica Neue", Arial, sans-serif; color: var(--white);
+  -webkit-font-smoothing: antialiased;
+}
+#root.vertical   { --pad: 96px;  --h1: 124px; --txt: 44px; --small: 30px; --kick: 28px; --top: 300px; --bottom: 220px; }
+#root.horizontal { --pad: 140px; --h1: 112px; --txt: 36px; --small: 24px; --kick: 22px; --top: 250px; --bottom: 150px; }
+
+#bg { position: absolute; inset: 0; background: var(--navy); }
+
+.scene { position: absolute; inset: 0; }
+.scene.yellow { background: var(--yellow); color: var(--navy); --soft: rgba(7,26,61,.65); --hair: rgba(7,26,61,.25); }
+.scene.blue   { background: var(--blue); }
+
+.brand { position: absolute; left: var(--pad); right: var(--pad); top: calc(var(--pad) * .8);
+  display: flex; justify-content: space-between; font-size: calc(var(--kick) * .85);
+  letter-spacing: .28em; text-transform: uppercase; font-weight: 600; color: rgba(255,255,255,.55);
+  mix-blend-mode: difference; }
+
+.days { position: absolute; left: var(--pad); right: var(--pad); top: calc(var(--pad) * .8 + 80px);
+  display: flex; gap: 0; border-top: 2px solid var(--hair); }
+.days span { flex: 1; padding-top: 18px; font-size: var(--kick); font-weight: 600; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--soft); opacity: .6; position: relative; }
+.days span.on { color: inherit; opacity: 1; }
+.days span.on::before { content: ""; position: absolute; left: 0; right: 24px; top: -2px; height: 4px; background: var(--yellow); }
+.yellow .days span.on::before { background: var(--navy); }
+
+.content { position: absolute; left: var(--pad); right: var(--pad); top: var(--top); bottom: var(--bottom);
+  display: flex; flex-direction: column; justify-content: center; }
+.horizontal .content { flex-direction: row; align-items: center; justify-content: flex-start; gap: 140px; }
+.horizontal .head { flex: 1.15; }
+.horizontal .side { flex: 1; }
+.vertical .side { margin-top: 72px; }
+
+.kicker { margin: 0 0 40px; font-size: var(--kick); font-weight: 700; letter-spacing: .22em; text-transform: uppercase; color: var(--teal); }
+.yellow .kicker, .blue .kicker { color: inherit; opacity: .75; }
+
+h1 { margin: 0; font-size: var(--h1); line-height: 1.02; font-weight: 800; letter-spacing: -.035em; }
+h1 .line { display: block; overflow: hidden; padding-bottom: .06em; }
+h1 .line > span { display: inline-block; }
+h1 em { font-style: normal; color: var(--yellow); }
+.yellow h1 em { color: var(--navy); }
+
+.sub { margin: 36px 0 0; font-size: calc(var(--txt) * 1.1); font-weight: 400; color: var(--soft); letter-spacing: .01em; }
+
+
+.items { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 34px; }
+.items li { display: flex; gap: 28px; align-items: baseline; font-size: var(--txt); font-weight: 600; line-height: 1.2; }
+.items li i { flex: none; width: 28px; height: 3px; background: var(--yellow); transform-origin: left; position: relative; top: -.3em; }
+.items small { display: block; margin-top: 6px; font-size: var(--small); font-weight: 400; color: var(--soft); }
+
+.steps { list-style: none; margin: 0; padding: 0; border-top: 2px solid var(--hair); }
+.steps li { display: flex; gap: 32px; align-items: baseline; padding: 26px 0; border-bottom: 2px solid var(--hair);
+  font-size: var(--txt); font-weight: 700; line-height: 1.15; }
+.steps span { font-size: var(--small); font-weight: 700; letter-spacing: .1em; opacity: .55; }
+
+.count { display: flex; align-items: center; gap: 18px; margin-bottom: 40px; font-size: var(--small); }
+.count span { width: 64px; height: 64px; border-radius: 50%; border: 2px solid var(--hair); display: grid; place-items: center;
+  font-weight: 800; font-size: var(--small); color: var(--soft); }
+.count span.past { border-color: var(--white); color: var(--white); }
+.count span.on { background: var(--yellow); border-color: var(--yellow); color: var(--navy); }
+.count b { margin-left: 12px; font-weight: 500; color: var(--soft); letter-spacing: .04em; }
+
+.stats { display: flex; flex-direction: column; border-top: 2px solid var(--hair); }
+.stat { flex: 1; display: flex; align-items: baseline; gap: 22px; padding: 28px 0; border-bottom: 2px solid var(--hair);
+  font-size: var(--txt); color: var(--soft); }
+.stat span { font-size: calc(var(--h1) * .8); font-weight: 800; color: var(--yellow); line-height: 1; min-width: 1ch; }
+
+.hours { display: flex; align-items: center; gap: 28px; margin-bottom: 60px; font-size: calc(var(--txt) * 1.5); font-weight: 800; }
+.hours .track { flex: 1; height: 4px; background: var(--hair); display: block; }
+.hours .fill { display: block; height: 100%; background: var(--yellow); transform-origin: left; }
+
+.note { margin: 56px 0 0; display: inline-block; font-size: var(--small); font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+  padding-top: 18px; border-top: 4px solid var(--yellow); }
+.yellow .note { border-color: var(--navy); }
+
+.progress { position: absolute; left: var(--pad); right: var(--pad); bottom: calc(var(--pad) * .7); height: 3px; background: rgba(255,255,255,.14); }
+.progress i { display: block; height: 100%; background: var(--yellow); transform-origin: left; }
+
+</style>
+</head>
+<body>
+<div id="root" class="horizontal" data-composition-id="aventuri-horizontal" data-start="0" data-width="1920" data-height="1080" data-fps="30">
+  <div id="bg" class="clip" data-start="0" data-duration="63.5" data-track-index="0"></div>
+  
+  <section id="s0" class="scene clip navy" data-start="0" data-duration="5" data-track-index="1">
+    
+    <div class="content">
+      <div class="head">
+        <p class="kicker">Plano de operação · 20 a 23 de novembro</p>
+        <h1><span class="line"><span>Aventuri</span></span><span class="line"><span><em>ANSR 2026</em></span></span></h1>
+        <p class="sub">Nosso Amiguinho</p>
+      </div>
+      <div class="side"><div class="body"><div class="stats"><div class="stat"><span>2</span>tendas</div><div class="stat"><span>3</span>apresentações</div><div class="stat"><span>4</span>dias</div></div></div></div>
+    </div>
+  </section>
+  <section id="s1" class="scene clip navy" data-start="5" data-duration="7.5" data-track-index="1">
+    <nav class="days"><span class="on">Sex 20</span><span class="">Sáb 21</span><span class="">Dom 22</span><span class="">Seg 23</span></nav>
+    <div class="content">
+      <div class="head">
+        <p class="kicker">Sexta · 20/11 · 10h</p>
+        <h1><span class="line"><span>Chegada e</span></span><span class="line"><span>montagem das</span></span><span class="line"><span><em>duas tendas</em></span></span></h1>
+        
+      </div>
+      <div class="side"><div class="body"><ul class="items"><li><i></i><div>Instalação de energia</div></li><li><i></i><div>Caixas de brindes e materiais</div></li><li><i></i><div>Preparação do atendimento</div></li><li><i></i><div>Alimentação no Aventuri<small>reservada para quem confirmou presença</small></div></li><li><i></i><div>Hospedagem<small>começa na parte da tarde</small></div></li></ul></div><p class="note">Participação de todos</p></div>
+    </div>
+  </section>
+  <section id="s2" class="scene clip navy" data-start="12.5" data-duration="6" data-track-index="1">
+    <nav class="days"><span class="on">Sex 20</span><span class="">Sáb 21</span><span class="">Dom 22</span><span class="">Seg 23</span></nav>
+    <div class="content">
+      <div class="head">
+        <p class="kicker">Sexta · Pré-show</p>
+        <h1><span class="line"><span>Primeira</span></span><span class="line"><span><em>apresentação</em></span></span></h1>
+        
+      </div>
+      <div class="side"><div class="body"><div class="count"><span class="on">1</span><span class="">2</span><span class="">3</span><b>de 3 apresentações</b></div><ul class="items"><li><i></i><div>Palco principal, antes da programação oficial</div></li><li><i></i><div>Anunciar a presença das tendas</div></li><li><i></i><div>Horário pensado para os personagens<small>mobilidade mais lenta</small></div></li></ul></div></div>
+    </div>
+  </section>
+  <section id="s3" class="scene clip navy" data-start="18.5" data-duration="6" data-track-index="1">
+    <nav class="days"><span class="">Sex 20</span><span class="on">Sáb 21</span><span class="">Dom 22</span><span class="">Seg 23</span></nav>
+    <div class="content">
+      <div class="head">
+        <p class="kicker">Sábado · 21/11 · Manhã</p>
+        <h1><span class="line"><span>Segunda</span></span><span class="line"><span><em>apresentação</em></span></span></h1>
+        
+      </div>
+      <div class="side"><div class="body"><div class="count"><span class="past">1</span><span class="on">2</span><span class="">3</span><b>de 3 apresentações</b></div><ul class="items"><li><i></i><div>Equipe presente no Aventuri durante o dia</div></li><li><i></i><div>Atividades e atendimentos nas tendas</div></li></ul></div></div>
+    </div>
+  </section>
+  <section id="s4" class="scene clip navy" data-start="24.5" data-duration="5.5" data-track-index="1">
+    <nav class="days"><span class="">Sex 20</span><span class="on">Sáb 21</span><span class="">Dom 22</span><span class="">Seg 23</span></nav>
+    <div class="content">
+      <div class="head">
+        <p class="kicker">Sábado · Noite</p>
+        <h1><span class="line"><span>Programação</span></span><span class="line"><span>livre para as</span></span><span class="line"><span><em>crianças</em></span></span></h1>
+        
+      </div>
+      <div class="side"><div class="body"><ul class="items"><li><i></i><div>Brinquedos infláveis</div></li><li><i></i><div>A Turma circula pelo Aventuri<small>fotos e interação</small></div></li></ul></div></div>
+    </div>
+  </section>
+  <section id="s5" class="scene clip yellow" data-start="30" data-duration="8.5" data-track-index="1">
+    <nav class="days"><span class="">Sex 20</span><span class="on">Sáb 21</span><span class="">Dom 22</span><span class="">Seg 23</span></nav>
+    <div class="content">
+      <div class="head">
+        <p class="kicker">Sábado · Noite · Prioridade</p>
+        <h1><span class="line"><span>Principal janela</span></span><span class="line"><span>de prospecção</span></span></h1>
+        
+      </div>
+      <div class="side"><div class="body"><ol class="steps"><li><span>01</span>Falar com pais e responsáveis</li><li><span>02</span>Apresentar a revista Nosso Amiguinho</li><li><span>03</span>Captar contatos de interessados</li><li><span>04</span>Agendar visitas</li></ol></div><p class="note">Um dos momentos de maior necessidade de mobilização da equipe</p></div>
+    </div>
+  </section>
+  <section id="s6" class="scene clip navy" data-start="38.5" data-duration="6.5" data-track-index="1">
+    <nav class="days"><span class="">Sex 20</span><span class="">Sáb 21</span><span class="on">Dom 22</span><span class="">Seg 23</span></nav>
+    <div class="content">
+      <div class="head">
+        <p class="kicker">Domingo · 22/11 · Manhã</p>
+        <h1><span class="line"><span>Terceira</span></span><span class="line"><span><em>apresentação</em></span></span></h1>
+        
+      </div>
+      <div class="side"><div class="body"><div class="count"><span class="past">1</span><span class="past">2</span><span class="on">3</span><b>de 3 apresentações</b></div><ul class="items"><li><i></i><div>Encerramento do Aventuri</div></li><li><i></i><div>Último dia de contato, prospecção<small>e oportunidades de vendas</small></div></li></ul></div><p class="note">Presença de toda a equipe</p></div>
+    </div>
+  </section>
+  <section id="s7" class="scene clip navy" data-start="45" data-duration="6" data-track-index="1">
+    <nav class="days"><span class="">Sex 20</span><span class="">Sáb 21</span><span class="on">Dom 22</span><span class="">Seg 23</span></nav>
+    <div class="content">
+      <div class="head">
+        <p class="kicker">Domingo · Após o programa</p>
+        <h1><span class="line"><span>Fechamento</span></span><span class="line"><span>no <em>Aventuri</em></span></span></h1>
+        
+      </div>
+      <div class="side"><div class="body"><ul class="items"><li><i></i><div>Almoço em conjunto<small>para quem estiver hospedado no local</small></div></li><li><i></i><div>Desmontagem das tendas</div></li><li><i></i><div>Organização dos materiais</div></li><li><i></i><div>Liberação da equipe</div></li></ul></div></div>
+    </div>
+  </section>
+  <section id="s8" class="scene clip navy" data-start="51" data-duration="6.5" data-track-index="1">
+    <nav class="days"><span class="">Sex 20</span><span class="">Sáb 21</span><span class="">Dom 22</span><span class="on">Seg 23</span></nav>
+    <div class="content">
+      <div class="head">
+        <p class="kicker">Segunda · 23/11 · Na Associação</p>
+        <h1><span class="line"><span>Reunião na</span></span><span class="line"><span><em>Associação</em></span></span></h1>
+        
+      </div>
+      <div class="side"><div class="body"><div class="hours"><span>9h</span><i class="track"><i class="fill"></i></i><span>12h</span></div><ul class="items"><li><i></i><div>Almoço na Associação<small>depois da reunião</small></div></li></ul></div></div>
+    </div>
+  </section>
+  <section id="s9" class="scene clip blue" data-start="57.5" data-duration="6" data-track-index="1">
+    
+    <div class="content">
+      <div class="head">
+        <p class="kicker">Compromisso da equipe</p>
+        <h1><span class="line"><span>Da montagem</span></span><span class="line"><span>à última</span></span><span class="line"><span>apresentação,</span></span><span class="line"><span><em>cada contato conta.</em></span></span></h1>
+        <p class="sub">Presença em todas as etapas.</p>
+      </div>
+      
+    </div>
+  </section>
+  <header class="clip brand" data-start="0" data-duration="63.5" data-track-index="2"><span>Aventuri ANSR 2026</span><span>Nosso Amiguinho</span></header>
+  <div class="clip progress" data-start="0" data-duration="63.5" data-track-index="3"><i></i></div>
+</div>
+<script>
+const tl = gsap.timeline({ paused: true });
+tl.fromTo(".progress i", { scaleX: 0 }, { scaleX: 1, duration: 63.5, ease: "none" }, 0);
+
+  tl.from("#s0 .kicker", { opacity: 0, x: -30, duration: .6, ease: "power3.out" }, 0.15)
+    .from("#s0 h1 .line > span", { yPercent: 105, duration: .8, stagger: .09, ease: "power4.out" }, 0.25)
+    .from("#s0 .days span", { opacity: 0, duration: .4, stagger: .05 }, 0.1)
+    .from("#s0 .sub, #s0 .count, #s0 .hours", { opacity: 0, y: 20, duration: .6, ease: "power3.out" }, 0.8)
+    .from("#s0 .count span", { scale: 0, duration: .45, stagger: .1, ease: "back.out(2)" }, 0.9)
+    .from("#s0 .stat", { opacity: 0, y: 30, duration: .6, stagger: .15, ease: "power3.out" }, 1.1)
+    .from("#s0 .items li, #s0 .steps li", { opacity: 0, y: 24, duration: .55, stagger: 0.18, ease: "power3.out" }, 1.1)
+    .from("#s0 .items li i", { scaleX: 0, duration: .5, stagger: .18, ease: "power2.out" }, 1.15)
+    .from("#s0 .hours .fill", { scaleX: 0, duration: 2, ease: "power1.inOut" }, 1.2)
+    .from("#s0 .note", { opacity: 0, y: 16, duration: .6, ease: "power3.out" }, 2.2)
+    .to("#s0 .content, #s0 .days", { opacity: 0, y: -24, duration: 0.5, ease: "power2.in" }, 4.5);
+  tl.from("#s1 .kicker", { opacity: 0, x: -30, duration: .6, ease: "power3.out" }, 5.15)
+    .from("#s1 h1 .line > span", { yPercent: 105, duration: .8, stagger: .09, ease: "power4.out" }, 5.25)
+    .from("#s1 .days span", { opacity: 0, duration: .4, stagger: .05 }, 5.1)
+    .from("#s1 .sub, #s1 .count, #s1 .hours", { opacity: 0, y: 20, duration: .6, ease: "power3.out" }, 5.8)
+    .from("#s1 .count span", { scale: 0, duration: .45, stagger: .1, ease: "back.out(2)" }, 5.9)
+    .from("#s1 .stat", { opacity: 0, y: 30, duration: .6, stagger: .15, ease: "power3.out" }, 6.1)
+    .from("#s1 .items li, #s1 .steps li", { opacity: 0, y: 24, duration: .55, stagger: 0.18, ease: "power3.out" }, 6.1)
+    .from("#s1 .items li i", { scaleX: 0, duration: .5, stagger: .18, ease: "power2.out" }, 6.15)
+    .from("#s1 .hours .fill", { scaleX: 0, duration: 2, ease: "power1.inOut" }, 6.2)
+    .from("#s1 .note", { opacity: 0, y: 16, duration: .6, ease: "power3.out" }, 7.2)
+    .to("#s1 .content, #s1 .days", { opacity: 0, y: -24, duration: 0.5, ease: "power2.in" }, 12);
+  tl.from("#s2 .kicker", { opacity: 0, x: -30, duration: .6, ease: "power3.out" }, 12.65)
+    .from("#s2 h1 .line > span", { yPercent: 105, duration: .8, stagger: .09, ease: "power4.out" }, 12.75)
+    .from("#s2 .days span", { opacity: 0, duration: .4, stagger: .05 }, 12.6)
+    .from("#s2 .sub, #s2 .count, #s2 .hours", { opacity: 0, y: 20, duration: .6, ease: "power3.out" }, 13.3)
+    .from("#s2 .count span", { scale: 0, duration: .45, stagger: .1, ease: "back.out(2)" }, 13.4)
+    .from("#s2 .stat", { opacity: 0, y: 30, duration: .6, stagger: .15, ease: "power3.out" }, 13.6)
+    .from("#s2 .items li, #s2 .steps li", { opacity: 0, y: 24, duration: .55, stagger: 0.18, ease: "power3.out" }, 13.6)
+    .from("#s2 .items li i", { scaleX: 0, duration: .5, stagger: .18, ease: "power2.out" }, 13.65)
+    .from("#s2 .hours .fill", { scaleX: 0, duration: 2, ease: "power1.inOut" }, 13.7)
+    .from("#s2 .note", { opacity: 0, y: 16, duration: .6, ease: "power3.out" }, 14.7)
+    .to("#s2 .content, #s2 .days", { opacity: 0, y: -24, duration: 0.5, ease: "power2.in" }, 18);
+  tl.from("#s3 .kicker", { opacity: 0, x: -30, duration: .6, ease: "power3.out" }, 18.65)
+    .from("#s3 h1 .line > span", { yPercent: 105, duration: .8, stagger: .09, ease: "power4.out" }, 18.75)
+    .from("#s3 .days span", { opacity: 0, duration: .4, stagger: .05 }, 18.6)
+    .from("#s3 .sub, #s3 .count, #s3 .hours", { opacity: 0, y: 20, duration: .6, ease: "power3.out" }, 19.3)
+    .from("#s3 .count span", { scale: 0, duration: .45, stagger: .1, ease: "back.out(2)" }, 19.4)
+    .from("#s3 .stat", { opacity: 0, y: 30, duration: .6, stagger: .15, ease: "power3.out" }, 19.6)
+    .from("#s3 .items li, #s3 .steps li", { opacity: 0, y: 24, duration: .55, stagger: 0.18, ease: "power3.out" }, 19.6)
+    .from("#s3 .items li i", { scaleX: 0, duration: .5, stagger: .18, ease: "power2.out" }, 19.65)
+    .from("#s3 .hours .fill", { scaleX: 0, duration: 2, ease: "power1.inOut" }, 19.7)
+    .from("#s3 .note", { opacity: 0, y: 16, duration: .6, ease: "power3.out" }, 20.7)
+    .to("#s3 .content, #s3 .days", { opacity: 0, y: -24, duration: 0.5, ease: "power2.in" }, 24);
+  tl.from("#s4 .kicker", { opacity: 0, x: -30, duration: .6, ease: "power3.out" }, 24.65)
+    .from("#s4 h1 .line > span", { yPercent: 105, duration: .8, stagger: .09, ease: "power4.out" }, 24.75)
+    .from("#s4 .days span", { opacity: 0, duration: .4, stagger: .05 }, 24.6)
+    .from("#s4 .sub, #s4 .count, #s4 .hours", { opacity: 0, y: 20, duration: .6, ease: "power3.out" }, 25.3)
+    .from("#s4 .count span", { scale: 0, duration: .45, stagger: .1, ease: "back.out(2)" }, 25.4)
+    .from("#s4 .stat", { opacity: 0, y: 30, duration: .6, stagger: .15, ease: "power3.out" }, 25.6)
+    .from("#s4 .items li, #s4 .steps li", { opacity: 0, y: 24, duration: .55, stagger: 0.18, ease: "power3.out" }, 25.6)
+    .from("#s4 .items li i", { scaleX: 0, duration: .5, stagger: .18, ease: "power2.out" }, 25.65)
+    .from("#s4 .hours .fill", { scaleX: 0, duration: 2, ease: "power1.inOut" }, 25.7)
+    .from("#s4 .note", { opacity: 0, y: 16, duration: .6, ease: "power3.out" }, 26.7)
+    .to("#s4 .content, #s4 .days", { opacity: 0, y: -24, duration: 0.5, ease: "power2.in" }, 29.5);
+  tl.from("#s5 .kicker", { opacity: 0, x: -30, duration: .6, ease: "power3.out" }, 30.15)
+    .from("#s5 h1 .line > span", { yPercent: 105, duration: .8, stagger: .09, ease: "power4.out" }, 30.25)
+    .from("#s5 .days span", { opacity: 0, duration: .4, stagger: .05 }, 30.1)
+    .from("#s5 .sub, #s5 .count, #s5 .hours", { opacity: 0, y: 20, duration: .6, ease: "power3.out" }, 30.8)
+    .from("#s5 .count span", { scale: 0, duration: .45, stagger: .1, ease: "back.out(2)" }, 30.9)
+    .from("#s5 .stat", { opacity: 0, y: 30, duration: .6, stagger: .15, ease: "power3.out" }, 31.1)
+    .from("#s5 .items li, #s5 .steps li", { opacity: 0, y: 24, duration: .55, stagger: 0.35, ease: "power3.out" }, 31.1)
+    .from("#s5 .items li i", { scaleX: 0, duration: .5, stagger: .18, ease: "power2.out" }, 31.15)
+    .from("#s5 .hours .fill", { scaleX: 0, duration: 2, ease: "power1.inOut" }, 31.2)
+    .from("#s5 .note", { opacity: 0, y: 16, duration: .6, ease: "power3.out" }, 32.9)
+    .to("#s5 .content, #s5 .days", { opacity: 0, y: -24, duration: 0.5, ease: "power2.in" }, 38);
+  tl.from("#s6 .kicker", { opacity: 0, x: -30, duration: .6, ease: "power3.out" }, 38.65)
+    .from("#s6 h1 .line > span", { yPercent: 105, duration: .8, stagger: .09, ease: "power4.out" }, 38.75)
+    .from("#s6 .days span", { opacity: 0, duration: .4, stagger: .05 }, 38.6)
+    .from("#s6 .sub, #s6 .count, #s6 .hours", { opacity: 0, y: 20, duration: .6, ease: "power3.out" }, 39.3)
+    .from("#s6 .count span", { scale: 0, duration: .45, stagger: .1, ease: "back.out(2)" }, 39.4)
+    .from("#s6 .stat", { opacity: 0, y: 30, duration: .6, stagger: .15, ease: "power3.out" }, 39.6)
+    .from("#s6 .items li, #s6 .steps li", { opacity: 0, y: 24, duration: .55, stagger: 0.18, ease: "power3.out" }, 39.6)
+    .from("#s6 .items li i", { scaleX: 0, duration: .5, stagger: .18, ease: "power2.out" }, 39.65)
+    .from("#s6 .hours .fill", { scaleX: 0, duration: 2, ease: "power1.inOut" }, 39.7)
+    .from("#s6 .note", { opacity: 0, y: 16, duration: .6, ease: "power3.out" }, 40.7)
+    .to("#s6 .content, #s6 .days", { opacity: 0, y: -24, duration: 0.5, ease: "power2.in" }, 44.5);
+  tl.from("#s7 .kicker", { opacity: 0, x: -30, duration: .6, ease: "power3.out" }, 45.15)
+    .from("#s7 h1 .line > span", { yPercent: 105, duration: .8, stagger: .09, ease: "power4.out" }, 45.25)
+    .from("#s7 .days span", { opacity: 0, duration: .4, stagger: .05 }, 45.1)
+    .from("#s7 .sub, #s7 .count, #s7 .hours", { opacity: 0, y: 20, duration: .6, ease: "power3.out" }, 45.8)
+    .from("#s7 .count span", { scale: 0, duration: .45, stagger: .1, ease: "back.out(2)" }, 45.9)
+    .from("#s7 .stat", { opacity: 0, y: 30, duration: .6, stagger: .15, ease: "power3.out" }, 46.1)
+    .from("#s7 .items li, #s7 .steps li", { opacity: 0, y: 24, duration: .55, stagger: 0.18, ease: "power3.out" }, 46.1)
+    .from("#s7 .items li i", { scaleX: 0, duration: .5, stagger: .18, ease: "power2.out" }, 46.15)
+    .from("#s7 .hours .fill", { scaleX: 0, duration: 2, ease: "power1.inOut" }, 46.2)
+    .from("#s7 .note", { opacity: 0, y: 16, duration: .6, ease: "power3.out" }, 47.2)
+    .to("#s7 .content, #s7 .days", { opacity: 0, y: -24, duration: 0.5, ease: "power2.in" }, 50.5);
+  tl.from("#s8 .kicker", { opacity: 0, x: -30, duration: .6, ease: "power3.out" }, 51.15)
+    .from("#s8 h1 .line > span", { yPercent: 105, duration: .8, stagger: .09, ease: "power4.out" }, 51.25)
+    .from("#s8 .days span", { opacity: 0, duration: .4, stagger: .05 }, 51.1)
+    .from("#s8 .sub, #s8 .count, #s8 .hours", { opacity: 0, y: 20, duration: .6, ease: "power3.out" }, 51.8)
+    .from("#s8 .count span", { scale: 0, duration: .45, stagger: .1, ease: "back.out(2)" }, 51.9)
+    .from("#s8 .stat", { opacity: 0, y: 30, duration: .6, stagger: .15, ease: "power3.out" }, 52.1)
+    .from("#s8 .items li, #s8 .steps li", { opacity: 0, y: 24, duration: .55, stagger: 0.18, ease: "power3.out" }, 52.1)
+    .from("#s8 .items li i", { scaleX: 0, duration: .5, stagger: .18, ease: "power2.out" }, 52.15)
+    .from("#s8 .hours .fill", { scaleX: 0, duration: 2, ease: "power1.inOut" }, 52.2)
+    .from("#s8 .note", { opacity: 0, y: 16, duration: .6, ease: "power3.out" }, 53.2)
+    .to("#s8 .content, #s8 .days", { opacity: 0, y: -24, duration: 0.5, ease: "power2.in" }, 57);
+  tl.from("#s9 .kicker", { opacity: 0, x: -30, duration: .6, ease: "power3.out" }, 57.65)
+    .from("#s9 h1 .line > span", { yPercent: 105, duration: .8, stagger: .09, ease: "power4.out" }, 57.75)
+    .from("#s9 .days span", { opacity: 0, duration: .4, stagger: .05 }, 57.6)
+    .from("#s9 .sub, #s9 .count, #s9 .hours", { opacity: 0, y: 20, duration: .6, ease: "power3.out" }, 58.3)
+    .from("#s9 .count span", { scale: 0, duration: .45, stagger: .1, ease: "back.out(2)" }, 58.4)
+    .from("#s9 .stat", { opacity: 0, y: 30, duration: .6, stagger: .15, ease: "power3.out" }, 58.6)
+    .from("#s9 .items li, #s9 .steps li", { opacity: 0, y: 24, duration: .55, stagger: 0.18, ease: "power3.out" }, 58.6)
+    .from("#s9 .items li i", { scaleX: 0, duration: .5, stagger: .18, ease: "power2.out" }, 58.65)
+    .from("#s9 .hours .fill", { scaleX: 0, duration: 2, ease: "power1.inOut" }, 58.7)
+    .from("#s9 .note", { opacity: 0, y: 16, duration: .6, ease: "power3.out" }, 59.7)
+    .to("#s9 .content, #s9 .days", { opacity: 0, y: -24, duration: 0.5, ease: "power2.in" }, 63);
+tl.set({}, {}, 63.5);
+window.__timelines = window.__timelines || {};
+window.__timelines["aventuri-horizontal"] = tl;
+</script>
+</body>
+</html>
