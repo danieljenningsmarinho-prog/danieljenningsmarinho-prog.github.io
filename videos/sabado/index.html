@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1080, height=1920" />
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<style>
+:root {
+  --sky-top: #0d1b3d;
+  --sky-mid: #3b2a5c;
+  --sky-low: #e07a3f;
+  --gold: #f5b84a;
+  --card: #fffaf2;
+  --ink: #1d1a24;
+  --muted: #6f6878;
+  --font-ui: "Inter";
+  --font-verse: "Playfair Display";
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { width:1080px; height:1920px; overflow:hidden; background:var(--sky-top); }
+#root { position:relative; width:1080px; height:1920px; overflow:hidden; font-family:var(--font-ui); }
+#bg { position:absolute; inset:0; background:linear-gradient(180deg,var(--sky-top) 0%,var(--sky-mid) 52%,var(--sky-low) 88%,#f3a65a 100%); }
+#sun { position:absolute; left:290px; top:1480px; width:500px; height:500px; border-radius:50%;
+  background:radial-gradient(circle,#fff3c9 0%,#ffd27a 38%,rgba(255,170,80,.55) 60%,rgba(255,140,60,0) 72%); }
+#glow { position:absolute; inset:0; background:radial-gradient(ellipse at 50% 85%,rgba(255,200,120,.55),rgba(255,200,120,0) 60%); opacity:0; }
+.stars { position:absolute; inset:0; }
+.stars b { position:absolute; width:4px; height:4px; border-radius:50%; background:#fff; opacity:.5; }
+.hook, .intro, .final { position:absolute; left:120px; width:660px; top:288px; height:960px; display:flex; flex-direction:column; justify-content:center; color:#fff; }
+.kicker { display:inline-block; align-self:flex-start; background:var(--gold); color:var(--ink); font-weight:900; font-size:30px; padding:12px 22px; border-radius:999px; letter-spacing:.02em; }
+.big { font-weight:900; font-size:74px; line-height:1.05; letter-spacing:-.03em; margin-top:34px; transform-origin:0 50%; }
+.big em { font-style:normal; color:var(--gold); }
+.lead { font-size:40px; line-height:1.3; margin-top:30px; color:#f3e8ff; font-weight:400; }
+.card-wrap { position:absolute; left:120px; top:300px; width:700px; height:940px; display:flex; align-items:center; }
+.card { width:700px; background:var(--card); color:var(--ink); border-radius:36px; padding:46px 44px 44px; box-shadow:0 40px 90px rgba(10,5,30,.45); }
+.head { display:flex; align-items:center; gap:20px; }
+.avatar { width:76px; height:76px; border-radius:50%; background:linear-gradient(180deg,var(--sky-mid),var(--sky-low)); position:relative; overflow:hidden; }
+.sun-ico { position:absolute; left:20px; top:34px; width:36px; height:36px; border-radius:50%; background:#ffd27a; }
+.name { font-weight:900; font-size:32px; }
+.sub { font-size:28px; color:var(--muted); margin-top:4px; }
+.num { font-weight:900; font-size:120px; line-height:1; color:#b85520; margin-top:34px; letter-spacing:-.04em; }
+.title { font-weight:900; font-size:54px; line-height:1.08; letter-spacing:-.02em; margin-top:10px; }
+.verse { font-family:var(--font-verse); font-style:italic; font-size:38px; line-height:1.32; margin-top:30px; color:#2c2636; }
+.ref { font-weight:700; font-size:28px; color:#b35a22; margin-top:24px; }
+.dots { display:flex; gap:12px; margin-top:34px; }
+.dots i { width:50px; height:8px; border-radius:4px; background:#e6dccd; }
+.dots i.on { background:var(--sky-low); }
+.final .verse2 { font-family:var(--font-verse); font-style:italic; font-size:46px; line-height:1.3; color:#fff; }
+.final .ref2 { font-weight:700; font-size:30px; color:var(--gold); margin-top:20px; }
+.final .inv { font-weight:900; font-size:80px; line-height:1.04; letter-spacing:-.03em; margin-top:60px; }
+.final .inv em { font-style:normal; color:var(--gold); }
+.final .when { font-size:36px; margin-top:28px; color:#fff1dc; }
+.final .cta { align-self:flex-start; margin-top:44px; background:#fff; color:var(--ink); font-weight:900; font-size:32px; padding:20px 28px; line-height:1.25; border-radius:22px; }
+.final .cta span { color:#b35a22; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="58.00" data-width="1080" data-height="1920">
+  <div id="sky" class="clip" data-start="0" data-duration="58.00" data-track-index="0" data-layout-allow-overflow>
+    <div id="bg"></div>
+    <div class="stars" id="stars"><b style="left:20px;top:40px"></b><b style="left:157px;top:351px"></b><b style="left:294px;top:662px"></b><b style="left:431px;top:73px"></b><b style="left:568px;top:384px"></b><b style="left:705px;top:695px"></b><b style="left:842px;top:106px"></b><b style="left:979px;top:417px"></b><b style="left:76px;top:728px"></b><b style="left:213px;top:139px"></b><b style="left:350px;top:450px"></b><b style="left:487px;top:761px"></b><b style="left:624px;top:172px"></b><b style="left:761px;top:483px"></b><b style="left:898px;top:794px"></b><b style="left:1035px;top:205px"></b><b style="left:132px;top:516px"></b><b style="left:269px;top:827px"></b><b style="left:406px;top:238px"></b><b style="left:543px;top:549px"></b><b style="left:680px;top:860px"></b><b style="left:817px;top:271px"></b><b style="left:954px;top:582px"></b><b style="left:51px;top:893px"></b><b style="left:188px;top:304px"></b><b style="left:325px;top:615px"></b><b style="left:462px;top:926px"></b><b style="left:599px;top:337px"></b></div>
+    <div id="glow"></div>
+    <div id="sun"></div>
+  </div>
+
+  <section id="hook" class="clip hook" data-start="0" data-duration="3.4" data-track-index="1">
+    <div class="kicker" id="hook-k">Quase ninguém percebe isso</div>
+    <h1 class="big" id="hook-t">Deus separou <em>um dia inteiro</em> por semana só para você descansar.</h1>
+  </section>
+
+  <section id="intro" class="clip intro" data-start="3.4" data-duration="4.40" data-track-index="1">
+    <div class="kicker" id="intro-k">Bíblia + Ellen G. White</div>
+    <h1 class="big" id="intro-t"><em>7 benefícios</em> do sábado que vão mudar sua semana</h1>
+    <p class="lead" id="intro-l">Assista até o final: tem um convite para você.</p>
+  </section>
+
+    <section id="b1" class="clip card-wrap" data-start="7.80" data-duration="5.60" data-track-index="2">
+      <div class="card" id="b1-card">
+        <div class="head"><div class="avatar"><div class="sun-ico"></div></div><div><div class="name">Benefícios do Sábado</div><div class="sub">1 de 7 · Bíblia</div></div></div>
+        <div class="num">01</div>
+        <h2 class="title">Descanso para o corpo e a mente</h2>
+        <p class="verse">“<span class="w">Seis</span> <span class="w">dias</span> <span class="w">trabalharás</span> <span class="w">e</span> <span class="w">farás</span> <span class="w">toda</span> <span class="w">a</span> <span class="w">tua</span> <span class="w">obra,</span> <span class="w">mas</span> <span class="w">o</span> <span class="w">sétimo</span> <span class="w">dia</span> <span class="w">é</span> <span class="w">o</span> <span class="w">sábado</span> <span class="w">do</span> <span class="w">Senhor,</span> <span class="w">teu</span> <span class="w">Deus.</span>”</p>
+        <div class="ref">Êxodo 20:9-10</div>
+        <div class="dots"><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i></div>
+      </div>
+    </section>
+    <section id="b2" class="clip card-wrap" data-start="13.40" data-duration="5.60" data-track-index="2">
+      <div class="card" id="b2-card">
+        <div class="head"><div class="avatar"><div class="sun-ico"></div></div><div><div class="name">Benefícios do Sábado</div><div class="sub">2 de 7 · Bíblia</div></div></div>
+        <div class="num">02</div>
+        <h2 class="title">Um presente feito para você</h2>
+        <p class="verse">“<span class="w">O</span> <span class="w">sábado</span> <span class="w">foi</span> <span class="w">feito</span> <span class="w">por</span> <span class="w">causa</span> <span class="w">do</span> <span class="w">homem,</span> <span class="w">e</span> <span class="w">não</span> <span class="w">o</span> <span class="w">homem</span> <span class="w">por</span> <span class="w">causa</span> <span class="w">do</span> <span class="w">sábado.</span>”</p>
+        <div class="ref">Marcos 2:27</div>
+        <div class="dots"><i class="on"></i><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i></div>
+      </div>
+    </section>
+    <section id="b3" class="clip card-wrap" data-start="19.00" data-duration="5.60" data-track-index="2">
+      <div class="card" id="b3-card">
+        <div class="head"><div class="avatar"><div class="sun-ico"></div></div><div><div class="name">Benefícios do Sábado</div><div class="sub">3 de 7 · Bíblia</div></div></div>
+        <div class="num">03</div>
+        <h2 class="title">Tempo de comunhão com Deus</h2>
+        <p class="verse">“<span class="w">Se</span> <span class="w">chamares</span> <span class="w">ao</span> <span class="w">sábado</span> <span class="w">deleitoso,</span> <span class="w">santo</span> <span class="w">dia</span> <span class="w">do</span> <span class="w">Senhor...</span> <span class="w">então</span> <span class="w">te</span> <span class="w">deleitarás</span> <span class="w">no</span> <span class="w">Senhor.</span>”</p>
+        <div class="ref">Isaías 58:13-14</div>
+        <div class="dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i></div>
+      </div>
+    </section>
+    <section id="b4" class="clip card-wrap" data-start="24.60" data-duration="5.60" data-track-index="2">
+      <div class="card" id="b4-card">
+        <div class="head"><div class="avatar"><div class="sun-ico"></div></div><div><div class="name">Benefícios do Sábado</div><div class="sub">4 de 7 · Ellen G. White</div></div></div>
+        <div class="num">04</div>
+        <h2 class="title">Sinal de que Deus nos transforma</h2>
+        <p class="verse">“<span class="w">O</span> <span class="w">sábado</span> <span class="w">é</span> <span class="w">um</span> <span class="w">sinal</span> <span class="w">do</span> <span class="w">poder</span> <span class="w">de</span> <span class="w">Cristo</span> <span class="w">para</span> <span class="w">nos</span> <span class="w">tornar</span> <span class="w">santos.</span>”</p>
+        <div class="ref">O Desejado de Todas as Nações, p. 288</div>
+        <div class="dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class=""></i><i class=""></i><i class=""></i></div>
+      </div>
+    </section>
+    <section id="b5" class="clip card-wrap" data-start="30.20" data-duration="5.60" data-track-index="2">
+      <div class="card" id="b5-card">
+        <div class="head"><div class="avatar"><div class="sun-ico"></div></div><div><div class="name">Benefícios do Sábado</div><div class="sub">5 de 7 · Ellen G. White</div></div></div>
+        <div class="num">05</div>
+        <h2 class="title">Fortalece a família</h2>
+        <p class="verse">“<span class="w">O</span> <span class="w">sábado</span> <span class="w">e</span> <span class="w">a</span> <span class="w">família</span> <span class="w">foram</span> <span class="w">igualmente</span> <span class="w">instituídos</span> <span class="w">no</span> <span class="w">Éden,</span> <span class="w">e</span> <span class="w">no</span> <span class="w">propósito</span> <span class="w">de</span> <span class="w">Deus</span> <span class="w">estão</span> <span class="w">indissoluvelmente</span> <span class="w">ligados.</span>”</p>
+        <div class="ref">Educação, p. 250</div>
+        <div class="dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class=""></i><i class=""></i></div>
+      </div>
+    </section>
+    <section id="b6" class="clip card-wrap" data-start="35.80" data-duration="5.60" data-track-index="2">
+      <div class="card" id="b6-card">
+        <div class="head"><div class="avatar"><div class="sun-ico"></div></div><div><div class="name">Benefícios do Sábado</div><div class="sub">6 de 7 · Bíblia</div></div></div>
+        <div class="num">06</div>
+        <h2 class="title">Memória da criação</h2>
+        <p class="verse">“<span class="w">E</span> <span class="w">abençoou</span> <span class="w">Deus</span> <span class="w">o</span> <span class="w">dia</span> <span class="w">sétimo</span> <span class="w">e</span> <span class="w">o</span> <span class="w">santificou;</span> <span class="w">porque</span> <span class="w">nele</span> <span class="w">descansou</span> <span class="w">de</span> <span class="w">toda</span> <span class="w">a</span> <span class="w">sua</span> <span class="w">obra.</span>”</p>
+        <div class="ref">Gênesis 2:3</div>
+        <div class="dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class=""></i></div>
+      </div>
+    </section>
+    <section id="b7" class="clip card-wrap" data-start="41.40" data-duration="5.60" data-track-index="2">
+      <div class="card" id="b7-card">
+        <div class="head"><div class="avatar"><div class="sun-ico"></div></div><div><div class="name">Benefícios do Sábado</div><div class="sub">7 de 7 · Bíblia</div></div></div>
+        <div class="num">07</div>
+        <h2 class="title">Esperança do descanso eterno</h2>
+        <p class="verse">“<span class="w">De</span> <span class="w">sábado</span> <span class="w">em</span> <span class="w">sábado,</span> <span class="w">virá</span> <span class="w">toda</span> <span class="w">a</span> <span class="w">carne</span> <span class="w">a</span> <span class="w">adorar</span> <span class="w">perante</span> <span class="w">mim,</span> <span class="w">diz</span> <span class="w">o</span> <span class="w">Senhor.</span>”</p>
+        <div class="ref">Isaías 66:23</div>
+        <div class="dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></div>
+      </div>
+    </section>
+
+  <section id="final" class="clip final" data-start="47.00" data-duration="11.00" data-track-index="1">
+    <p class="verse2" id="f-v">“Vinde a mim, todos os que estais cansados e sobrecarregados, e eu vos aliviarei.”</p>
+    <div class="ref2" id="f-r">Mateus 11:28</div>
+    <h1 class="inv" id="f-i">Neste sábado, <em>descanse no Senhor.</em></h1>
+    <p class="when" id="f-w">Do pôr do sol de sexta ao pôr do sol de sábado. Você é nosso convidado.</p>
+    <div class="cta" id="f-c">Comente <span>DESCANSO</span> e envie para quem precisa</div>
+  </section>
+</div>
+<script>
+  const tl = gsap.timeline({ paused: true });
+  // slow sunset: sun sinks, sky glows, stars twinkle in at the end
+  tl.fromTo("#sun", {y: 0}, {y: 140, duration: 47.00, ease: "none"}, 0);
+  tl.to("#sun", {y: -260, scale: 1.25, duration: 3, ease: "power2.inOut"}, 47.00);
+  tl.to("#glow", {opacity: 1, duration: 3, ease: "power2.inOut"}, 47.00);
+  tl.fromTo("#stars", {opacity: .25}, {opacity: .8, duration: 58.00, ease: "none"}, 0);
+  // hook (on screen at frame 0 for the thumbnail)
+  tl.fromTo("#hook-t", {scale: 1.0}, {scale: 1.04, duration: 3.2, ease: "none"}, 0);
+  tl.to("#hook", {opacity: 0, y: -60, duration: .3, ease: "power2.in"}, 3.05);
+  // intro
+  tl.fromTo("#intro-k", {opacity: 0, y: 20}, {opacity: 1, y: 0, duration: .35}, 3.45);
+  tl.fromTo("#intro-t", {opacity: 0, y: 40}, {opacity: 1, y: 0, duration: .5, ease: "power3.out"}, 3.55);
+  tl.fromTo("#intro-l", {opacity: 0}, {opacity: 1, duration: .4}, 4.4);
+  tl.to("#intro", {opacity: 0, y: -60, duration: .35, ease: "power2.in"}, 7.40);
+
+  tl.fromTo("#b1-card", {y: 90, opacity: 0, scale: .96}, {y: 0, opacity: 1, scale: 1, duration: .55, ease: "power3.out"}, 7.85);
+  tl.fromTo("#b1 .num", {opacity: 0, x: -30}, {opacity: 1, x: 0, duration: .4, ease: "power2.out"}, 8.10);
+  tl.fromTo("#b1 .title", {opacity: 0, y: 24}, {opacity: 1, y: 0, duration: .45, ease: "power3.out"}, 8.15);
+  tl.fromTo("#b1 .w", {opacity: 0.08}, {opacity: 1, duration: .25, stagger: 0.090, ease: "none"}, 8.60);
+  tl.fromTo("#b1 .ref", {opacity: 0, y: 12}, {opacity: 1, y: 0, duration: .4}, 10.80);
+  tl.to("#b1-card", {y: -70, opacity: 0, duration: .35, ease: "power2.in"}, 13.00);
+  tl.fromTo("#b2-card", {y: 90, opacity: 0, scale: .96}, {y: 0, opacity: 1, scale: 1, duration: .55, ease: "power3.out"}, 13.45);
+  tl.fromTo("#b2 .num", {opacity: 0, x: -30}, {opacity: 1, x: 0, duration: .4, ease: "power2.out"}, 13.70);
+  tl.fromTo("#b2 .title", {opacity: 0, y: 24}, {opacity: 1, y: 0, duration: .45, ease: "power3.out"}, 13.75);
+  tl.fromTo("#b2 .w", {opacity: 0.08}, {opacity: 1, duration: .25, stagger: 0.090, ease: "none"}, 14.20);
+  tl.fromTo("#b2 .ref", {opacity: 0, y: 12}, {opacity: 1, y: 0, duration: .4}, 16.40);
+  tl.to("#b2-card", {y: -70, opacity: 0, duration: .35, ease: "power2.in"}, 18.60);
+  tl.fromTo("#b3-card", {y: 90, opacity: 0, scale: .96}, {y: 0, opacity: 1, scale: 1, duration: .55, ease: "power3.out"}, 19.05);
+  tl.fromTo("#b3 .num", {opacity: 0, x: -30}, {opacity: 1, x: 0, duration: .4, ease: "power2.out"}, 19.30);
+  tl.fromTo("#b3 .title", {opacity: 0, y: 24}, {opacity: 1, y: 0, duration: .45, ease: "power3.out"}, 19.35);
+  tl.fromTo("#b3 .w", {opacity: 0.08}, {opacity: 1, duration: .25, stagger: 0.090, ease: "none"}, 19.80);
+  tl.fromTo("#b3 .ref", {opacity: 0, y: 12}, {opacity: 1, y: 0, duration: .4}, 22.00);
+  tl.to("#b3-card", {y: -70, opacity: 0, duration: .35, ease: "power2.in"}, 24.20);
+  tl.fromTo("#b4-card", {y: 90, opacity: 0, scale: .96}, {y: 0, opacity: 1, scale: 1, duration: .55, ease: "power3.out"}, 24.65);
+  tl.fromTo("#b4 .num", {opacity: 0, x: -30}, {opacity: 1, x: 0, duration: .4, ease: "power2.out"}, 24.90);
+  tl.fromTo("#b4 .title", {opacity: 0, y: 24}, {opacity: 1, y: 0, duration: .45, ease: "power3.out"}, 24.95);
+  tl.fromTo("#b4 .w", {opacity: 0.08}, {opacity: 1, duration: .25, stagger: 0.090, ease: "none"}, 25.40);
+  tl.fromTo("#b4 .ref", {opacity: 0, y: 12}, {opacity: 1, y: 0, duration: .4}, 27.60);
+  tl.to("#b4-card", {y: -70, opacity: 0, duration: .35, ease: "power2.in"}, 29.80);
+  tl.fromTo("#b5-card", {y: 90, opacity: 0, scale: .96}, {y: 0, opacity: 1, scale: 1, duration: .55, ease: "power3.out"}, 30.25);
+  tl.fromTo("#b5 .num", {opacity: 0, x: -30}, {opacity: 1, x: 0, duration: .4, ease: "power2.out"}, 30.50);
+  tl.fromTo("#b5 .title", {opacity: 0, y: 24}, {opacity: 1, y: 0, duration: .45, ease: "power3.out"}, 30.55);
+  tl.fromTo("#b5 .w", {opacity: 0.08}, {opacity: 1, duration: .25, stagger: 0.090, ease: "none"}, 31.00);
+  tl.fromTo("#b5 .ref", {opacity: 0, y: 12}, {opacity: 1, y: 0, duration: .4}, 33.20);
+  tl.to("#b5-card", {y: -70, opacity: 0, duration: .35, ease: "power2.in"}, 35.40);
+  tl.fromTo("#b6-card", {y: 90, opacity: 0, scale: .96}, {y: 0, opacity: 1, scale: 1, duration: .55, ease: "power3.out"}, 35.85);
+  tl.fromTo("#b6 .num", {opacity: 0, x: -30}, {opacity: 1, x: 0, duration: .4, ease: "power2.out"}, 36.10);
+  tl.fromTo("#b6 .title", {opacity: 0, y: 24}, {opacity: 1, y: 0, duration: .45, ease: "power3.out"}, 36.15);
+  tl.fromTo("#b6 .w", {opacity: 0.08}, {opacity: 1, duration: .25, stagger: 0.090, ease: "none"}, 36.60);
+  tl.fromTo("#b6 .ref", {opacity: 0, y: 12}, {opacity: 1, y: 0, duration: .4}, 38.80);
+  tl.to("#b6-card", {y: -70, opacity: 0, duration: .35, ease: "power2.in"}, 41.00);
+  tl.fromTo("#b7-card", {y: 90, opacity: 0, scale: .96}, {y: 0, opacity: 1, scale: 1, duration: .55, ease: "power3.out"}, 41.45);
+  tl.fromTo("#b7 .num", {opacity: 0, x: -30}, {opacity: 1, x: 0, duration: .4, ease: "power2.out"}, 41.70);
+  tl.fromTo("#b7 .title", {opacity: 0, y: 24}, {opacity: 1, y: 0, duration: .45, ease: "power3.out"}, 41.75);
+  tl.fromTo("#b7 .w", {opacity: 0.08}, {opacity: 1, duration: .25, stagger: 0.090, ease: "none"}, 42.20);
+  tl.fromTo("#b7 .ref", {opacity: 0, y: 12}, {opacity: 1, y: 0, duration: .4}, 44.40);
+  tl.to("#b7-card", {y: -70, opacity: 0, duration: .35, ease: "power2.in"}, 46.60);
+  // final invitation
+  tl.fromTo("#f-v", {opacity: 0, y: 30}, {opacity: 1, y: 0, duration: .8, ease: "power2.out"}, 47.20);
+  tl.fromTo("#f-r", {opacity: 0}, {opacity: 1, duration: .5}, 48.20);
+  tl.fromTo("#f-i", {opacity: 0, y: 40}, {opacity: 1, y: 0, duration: .7, ease: "power3.out"}, 50.00);
+  tl.fromTo("#f-w", {opacity: 0}, {opacity: 1, duration: .6}, 51.60);
+  tl.fromTo("#f-c", {opacity: 0, scale: .9}, {opacity: 1, scale: 1, duration: .5, ease: "back.out(2)"}, 53.20);
+  window.__timelines["main"] = tl;
+  tl.seek(0);
+</script>
+</body>
+</html>
